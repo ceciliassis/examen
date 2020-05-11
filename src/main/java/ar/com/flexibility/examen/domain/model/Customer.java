@@ -5,12 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Client {
+public class Customer {
 
-    public Client() {
+    public Customer() {
     }
 
-    public Client (String name, String email, String password) {
+    public Customer(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -45,4 +45,6 @@ public class Client {
         this.email = email;
     }
 
+    public void setPassword(String password) {
+    }
 }

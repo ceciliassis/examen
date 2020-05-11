@@ -1,46 +1,80 @@
 package ar.com.flexibility.examen.app.rest;
 
-import ar.com.flexibility.examen.app.api.ClientApi;
-import ar.com.flexibility.examen.domain.model.Client;
-import ar.com.flexibility.examen.domain.repository.ClientRepository;
+import ar.com.flexibility.examen.domain.model.Customer;
+import ar.com.flexibility.examen.domain.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path = "/clients")
-public class ClientController {
+@RequestMapping(path = "/customers")
+public class CustomerController {
     @Autowired
-    private ClientRepository clientRepository;
+    private CustomerRepository customerRepository;
 
 
     @PostMapping("")
-    public ResponseEntity <Client> createClient(@RequestBody String email, String password, String name) {
+    public ResponseEntity <?> createCustomer(@RequestBody Customer customer) {
 
-        if (email.isEmpty () || password.isEmpty () || name.isEmpty ())
-            return new ResponseEntity <> ( error, HttpStatus.NOT_ACCEPTABLE );
+        if (customer.getEmail ().isEmpty ())
+            return new ResponseEntity <> ( "MISSING INFO", HttpStatus.NOT_ACCEPTABLE );
 
-        Client newClient = clientRepository.save ( new client( name, email, password );
-        return new ResponseEntity <> ( newClient, HttpStatus.OK );
+        if (isRegistered ( customer.getEmail () ))
+            return new ResponseEntity <> ( "CONFLICT", HttpStatus.CONFLICT );
+
+        customerRepository.save ( customer );
+        return new ResponseEntity <> ( "SUCCESS", HttpStatus.OK );
     }
 
-    @DeleteMapping("")
-    public ResponseEntity <Client> deleteClient(@RequestBody Client client) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity <?> deleteCustomer(@PathVariable Long id) {
 
-        Client client = clientRepository.findByEmail(client.getEmail ());
-        if (client.getName ()
-//        if client1. Validar se o cliente existe
-//        1.1. se existir -> deleta cliente
-        repository.delete ( client.getId () );
-        return new ResponseEntity <> ( client, HttpStatus.OK );
-//        1.2. se não existir -> retorna um erro
+        if (customerRepository.exists ( id )) {
+            customerRepository.delete ( id );
+            return new ResponseEntity <> ( "DELETED", HttpStatus.OK );
+        }
+
+        return new ResponseEntity <> ( "NOT FOUND", HttpStatus.NOT_FOUND );
+
     }
 
-//    GET
+    @PatchMapping("/{id}")
+    public ResponseEntity <?> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
 
-//    PATCH (update parcial)
+        if (customerRepository.exists ( id )) {
 
-//    PUT (update total)
+            Customer currentCustomer = customerRepository.findOne (id );
+            if (!customer.getName ().isEmpty ()) {
+                currentCustomer.setName ( customer.getName () );
+            }
+            if (!customer.getEmail ().isEmpty ()) {
+                currentCustomer.setEmail ( customer.getEmail () );
+            }
+
+            customerRepository.save(currentCustomer);
+            return new ResponseEntity <> ( "UPDATED CUSTOMER " + id.toString (), HttpStatus.OK );
+        }
+
+        return new ResponseEntity <> ( "NOT FOUND", HttpStatus.NOT_FOUND );
+
+    }
+
+    @GetMapping("")
+    public Iterable <Customer> findAll() {
+        return customerRepository.findAll ();
+    }
+
+    @GetMapping("/{id}")
+    public Customer getCustomer(@PathVariable Long id) {
+        return customerRepository.findOne ( id );
+    }
+
+
+    private boolean isRegistered(String email) {
+        Customer customer = customerRepository.findByEmail ( email );
+        return customer != null;
+
+    }
 
 }
