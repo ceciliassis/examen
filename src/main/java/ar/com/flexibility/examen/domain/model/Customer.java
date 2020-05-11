@@ -10,12 +10,20 @@ public class Client {
     public Client() {
     }
 
+    public Client (String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
     @Id
     @GeneratedValue
     private Long id;
     private String name;
     private String email;
     private String password;
+
+
 
     public Long getId() {
         return id;
