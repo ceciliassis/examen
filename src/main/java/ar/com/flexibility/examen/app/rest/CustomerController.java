@@ -24,41 +24,40 @@ public class CustomerController {
             return new ResponseEntity <> ( "CONFLICT", HttpStatus.CONFLICT );
 
         customerRepository.save ( customer );
-        return new ResponseEntity <> ( "SUCCESS", HttpStatus.OK );
+        return new ResponseEntity <> ( "CUSTOMER " + customer.getId ().toString () + " CREATED", HttpStatus.OK );
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity <?> deleteCustomer(@PathVariable Long id) {
 
-        if (customerRepository.exists ( id )) {
-            customerRepository.delete ( id );
-            return new ResponseEntity <> ( "DELETED", HttpStatus.OK );
+        if (!customerRepository.exists ( id )) {
+            return new ResponseEntity <> ( "CUSTOMER " + id.toString () + " NOT FOUND", HttpStatus.NOT_FOUND );
         }
 
-        return new ResponseEntity <> ( "NOT FOUND", HttpStatus.NOT_FOUND );
+        customerRepository.delete ( id );
+        return new ResponseEntity <> ( "CUSTOMER " + id.toString () + " DELETED", HttpStatus.OK );
 
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity <?> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
 
-        if (customerRepository.exists ( id )) {
-
-            Customer currentCustomer = customerRepository.findOne (id );
-            if (!customer.getName ().isEmpty ()) {
-                currentCustomer.setName ( customer.getName () );
-            }
-            if (!customer.getEmail ().isEmpty ()) {
-                currentCustomer.setEmail ( customer.getEmail () );
-            }
-
-            customerRepository.save(currentCustomer);
-            return new ResponseEntity <> ( "UPDATED CUSTOMER " + id.toString (), HttpStatus.OK );
+        if (!customerRepository.exists ( id )) {
+            return new ResponseEntity <> ( "CUSTOMER " + id.toString () + " NOT FOUND", HttpStatus.NOT_FOUND );
         }
 
-        return new ResponseEntity <> ( "NOT FOUND", HttpStatus.NOT_FOUND );
+        Customer currentCustomer = customerRepository.findOne ( id );
+        if (!customer.getName ().isEmpty ()) {
+            currentCustomer.setName ( customer.getName () );
+        }
+        if (!customer.getEmail ().isEmpty ()) {
+            currentCustomer.setEmail ( customer.getEmail () );
+        }
 
+        customerRepository.save ( currentCustomer );
+        return new ResponseEntity <> ( "CUSTOMER " + id.toString () + " UPDATED", HttpStatus.OK );
     }
+
 
     @GetMapping("")
     public Iterable <Customer> findAll() {
