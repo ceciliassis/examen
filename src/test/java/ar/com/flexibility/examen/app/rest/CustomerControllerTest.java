@@ -14,8 +14,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,5 +60,18 @@ public class CustomerControllerTest {
                 .content(mapper.writeValueAsString(customer)))
                 .andExpect(status().isNotAcceptable())
                 .andExpect(content().string("MISSING INFO"));
+    }
+
+    @Test
+    public void whenCustomerValidDeleted_thenReturn200() throws Exception {
+        Customer customer =  new Customer(1L, "Cecilia", "cyassis@gmail.com");
+
+        when(customerRepository.findOne(any())).thenReturn(customer);
+
+        mockMvc.perform(delete("/customers/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("CUSTOMER 1 DELETED"));
+
+        verify(customerRepository, times(1)).delete(1L);
     }
 }

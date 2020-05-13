@@ -36,7 +36,6 @@ public class CustomerController {
 
         customerRepository.delete ( id );
         return new ResponseEntity <> ( "CUSTOMER " + id.toString () + " DELETED", HttpStatus.OK );
-
     }
 
     @PatchMapping("/{id}")
