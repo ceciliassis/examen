@@ -4,12 +4,14 @@ import ar.com.flexibility.examen.domain.model.Customer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Product {
+
+
+    public Product() {
+    }
 
     @Id
     @GeneratedValue
@@ -18,9 +20,9 @@ public class Product {
     private String description;
     private double price;
 
-    public Product() {
-
-    }
+    @ManyToOne(fetch= FetchType.EAGER)
+    @JoinColumn(name="shoppingCartProduct")
+    private ShoppingCartProduct shoppingCartProduct;
 
     public Long getId() {
         return id;
