@@ -1,8 +1,7 @@
 package ar.com.flexibility.examen.domain.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -22,6 +21,9 @@ public class Customer {
     private String name;
     private String email;
     private String password;
+
+   @OneToMany(mappedBy = "customer", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+   private List <ShoppingCart> shoppingCart;
 
 
     public Long getId() {
