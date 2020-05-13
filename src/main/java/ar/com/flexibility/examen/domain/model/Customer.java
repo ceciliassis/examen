@@ -10,6 +10,12 @@ public class Customer {
     public Customer() {
     }
 
+    public Customer(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+
     @Id
     @GeneratedValue
     private Long id;
