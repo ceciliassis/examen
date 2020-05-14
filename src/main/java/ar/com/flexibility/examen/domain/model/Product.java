@@ -20,9 +20,17 @@ public class Product {
     private String description;
     private double price;
 
-    @ManyToOne(fetch= FetchType.EAGER)
-    @JoinColumn(name="shoppingCartProduct")
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "shoppingCartProduct")
     private ShoppingCartProduct shoppingCartProduct;
+
+    public Product(long id, String name, String description, double price) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
 
     public Long getId() {
         return id;
