@@ -14,11 +14,11 @@ public class ShoppingCartProduct {
     private Long id;
 
     @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="product")
+    @JoinColumn(name="product_id")
     private Product product;
 
     @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="shoppingCart")
+    @JoinColumn(name="shopping_cart_id")
     private ShoppingCart shoppingCart;
 
     private int quantity;

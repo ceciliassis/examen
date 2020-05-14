@@ -1,12 +1,11 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    platform: h2
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    platform: postgres
+    username: flexibility
+    password: flexibility
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database: POSTGRESQL
     hibernate:
       ddl-auto: update
     properties:
@@ -14,10 +13,4 @@ spring:
         show_sql: true
         use_sql_comments: true
         format_sql: true
-  h2:
-    console:
-      enabled: true
-      path: /console
-      settings:
-        trace: false
-        web-allow-others: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect

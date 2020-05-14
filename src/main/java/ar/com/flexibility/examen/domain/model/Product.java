@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Entity
 public class Product {
 
-
     public Product() {
     }
 
@@ -20,9 +19,6 @@ public class Product {
     private String description;
     private double price;
 
-    @ManyToOne(fetch= FetchType.EAGER)
-    @JoinColumn(name="shoppingCartProduct")
-    private ShoppingCartProduct shoppingCartProduct;
 
     public Long getId() {
         return id;

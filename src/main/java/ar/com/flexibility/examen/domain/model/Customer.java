@@ -23,7 +23,7 @@ public class Customer {
     private String password;
 
    @OneToMany(mappedBy = "customer", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-   private List <ShoppingCart> shoppingCart;
+   private List <ShoppingCart> shoppingCarts;
 
 
     public Long getId() {
