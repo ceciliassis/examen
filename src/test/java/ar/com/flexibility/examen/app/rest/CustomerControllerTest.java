@@ -72,4 +72,26 @@ public class CustomerControllerTest {
 
         verify(customerRepository, times(1)).delete(1L);
     }
+//    @Test
+//    public void whenCustomerValidDeleted_thenReturn200() throws Exception {
+//        Customer customer =  new Customer(1L, "Cecilia", "cyassis@gmail.com");
+//
+//        when(customerRepository.findOne(any())).thenReturn(customer);
+//
+//        mockMvc.perform(delete("/customers/1"))
+//                .andExpect(status().isOk())
+//                .andExpect(content().string("CUSTOMER 1 DELETED"));
+//
+//        verify(customerRepository, times(1)).delete(1L);
+//    }
+//
+//    @Test
+//    public void whenCustomerDeletionIsInvalid_thenReturn404() throws Exception {
+//
+//        mockMvc.perform(delete("/customers/1"))
+//                .andExpect(status ().isNotFound ())
+//                .andExpect ( content().string("CUSTOMER 1 NOT FOUND"));
+//
+//        verify(customerRepository, times(1)).delete(1L);
+//    }
 }
