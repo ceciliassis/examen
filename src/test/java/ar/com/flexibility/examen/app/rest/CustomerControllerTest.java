@@ -64,9 +64,7 @@ public class CustomerControllerTest {
 
     @Test
     public void whenCustomerValidDeleted_thenReturn200() throws Exception {
-        Customer customer =  new Customer(1L, "Cecilia", "cyassis@gmail.com");
-
-        when(customerRepository.findOne(any())).thenReturn(customer);
+        when(customerRepository.exists(any())).thenReturn(true);
 
         mockMvc.perform(delete("/customers/1"))
                 .andExpect(status().isOk())
