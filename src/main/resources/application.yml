@@ -2,10 +2,9 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     platform: postgres
-    username: flexibility
-    password: flexibility
+    username: postgres
+    password: lalala
   jpa:
-    database: POSTGRESQL
     hibernate:
       ddl-auto: update
     properties:

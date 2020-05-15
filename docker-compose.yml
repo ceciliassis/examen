@@ -4,7 +4,14 @@ services:
   db:
     image: postgres
     environment:
-      POSTGRES_USER: flexibility
-      POSTGRES_PASSWORD: flexibility
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: lalala
     ports:
-    - 5432:5432
+      - 5432:5432
+  db_admin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@example.com
+      PGADMIN_DEFAULT_PASSWORD: lalala
+    ports:
+      - 5433:80
