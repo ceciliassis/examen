@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/customers")
 public class CustomerController {
@@ -30,7 +32,7 @@ public class CustomerController {
 
         customerRepository.save(customer);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -62,10 +64,8 @@ public class CustomerController {
         return new ResponseEntity<>(currentCustomer, HttpStatus.OK);
     }
 
-
     private boolean isRegistered(String email) {
         Customer customer = customerRepository.findByEmail(email);
         return customer != null;
     }
-
 }
