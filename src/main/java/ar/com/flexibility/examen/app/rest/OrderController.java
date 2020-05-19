@@ -44,22 +44,6 @@ public class OrderController {
         return new ResponseEntity<>(shoppingCarts, HttpStatus.OK);
     }
 
-    @PostMapping("customer/{customerId}")
-    public ResponseEntity<ShoppingCart> createOrder(@PathVariable Long customerId) {
-        if (!customerRepository.exists(customerId))
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        Customer customer = customerRepository.findOne(customerId);
-        ShoppingCart shoppingCart = shoppingCartRepository.findByCustomerAndAuthorizedFalse(customer);
-
-        if (shoppingCart == null) {
-            shoppingCart = new ShoppingCart(customer);
-            shoppingCartRepository.save(shoppingCart);
-        }
-
-        return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
-    }
-
     @GetMapping("customer/{customerId}/active")
     public ResponseEntity<ShoppingCart> getCustomerActiveShoppingCart(@PathVariable Long customerId) {
         if (!customerRepository.exists(customerId))
@@ -76,26 +60,33 @@ public class OrderController {
 
     @PatchMapping("customer/{customerId}/active")
     public ResponseEntity<ShoppingCart> updateShoppingCart(
-            @PathVariable Long customerId, @RequestBody ShoppingCart shoppingCart
+            @PathVariable Long customerId, @RequestBody List<ShoppingCartProduct> shoppingCartProducts
     ) {
         if (!customerRepository.exists(customerId))
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         Customer customer = customerRepository.findOne(customerId);
 //        TODO: refactor to use exists
-        ShoppingCart activeShoppingCart = shoppingCartRepository.findByCustomerAndAuthorizedFalse(customer);
+        ShoppingCart shoppingCart = shoppingCartRepository.findByCustomerAndAuthorizedFalse(customer);
 
-        if (activeShoppingCart == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (shoppingCart == null) {
+            shoppingCart = new ShoppingCart(customer);
+            shoppingCartRepository.save(shoppingCart);
+        }
 
-        if (activeShoppingCart.getId() != shoppingCart.getId())
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        for (ShoppingCartProduct shoppingCartProduct : shoppingCartProducts) {
+            ShoppingCartProduct currentProduct = shoppingCartProductRepository.findByShoppingCartAndProduct(
+                    shoppingCart,
+                    shoppingCartProduct.getProduct());
 
-//        NOTE: can this update the product?
-//        NOTE: how to pass a new product?
-        for (ShoppingCartProduct product : shoppingCart.getProducts()) {
-            product.setShoppingCart(activeShoppingCart);
-            shoppingCartProductRepository.save(product);
+            if (currentProduct == null) {
+                shoppingCartProduct.setShoppingCart(shoppingCart);
+                currentProduct = shoppingCartProduct;
+            } else {
+                currentProduct.setQuantity(shoppingCartProduct.getQuantity());
+            }
+
+            shoppingCartProductRepository.save(currentProduct);
         }
 
         return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
