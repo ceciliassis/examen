@@ -2,22 +2,32 @@ package ar.com.flexibility.examen.app.rest;
 
 import ar.com.flexibility.examen.domain.model.Customer;
 import ar.com.flexibility.examen.domain.repository.CustomerRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping(path = "/customers")
 public class CustomerController {
+    Logger logger = LogManager.getLogger(CustomerController.class);
+
     @Autowired
     private CustomerRepository customerRepository;
 
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomer(@PathVariable Long id) {
-        if (!customerRepository.exists(id))
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        logger.debug("Checking if customer exists");
 
+        if (!customerRepository.exists(id)){
+            logger.debug("Customer doesn't exist, returning 404");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        logger.debug("Customer exists, returning expected customer");
         return new ResponseEntity<>(customerRepository.findOne(id), HttpStatus.OK);
     }
 
