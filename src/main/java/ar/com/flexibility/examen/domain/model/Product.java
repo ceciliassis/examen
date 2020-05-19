@@ -1,6 +1,7 @@
 package ar.com.flexibility.examen.domain.model;
 
 import ar.com.flexibility.examen.domain.model.Customer;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,8 +13,10 @@ public class Product {
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private Long id;
+
     private String name;
     private String description;
     private double price;

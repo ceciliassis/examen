@@ -1,6 +1,8 @@
 
 package ar.com.flexibility.examen.domain.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,8 +12,8 @@ public class ShoppingCart {
     }
 
     @Id
-    @GeneratedValue
-//    TODO: add native generator
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)

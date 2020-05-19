@@ -1,5 +1,7 @@
 package ar.com.flexibility.examen.domain.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -15,12 +17,15 @@ public class Customer {
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private Long id;
+
     private String name;
     private String email;
     private String password;
 
+//    TODO: remove this mapping. Produces a unecessary LEFT OUTER JOIN
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ShoppingCart> shoppingCarts;
 
