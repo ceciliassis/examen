@@ -15,6 +15,9 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomer(@PathVariable Long id) {
+        if (!customerRepository.exists(id))
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         return new ResponseEntity<>(customerRepository.findOne(id), HttpStatus.OK);
     }
 
