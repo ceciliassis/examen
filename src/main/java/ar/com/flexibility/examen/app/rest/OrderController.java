@@ -36,12 +36,8 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         Customer customer = customerRepository.findOne(customerId);
-        List<ShoppingCart> shoppingCarts = shoppingCartRepository.findByCustomer(customer);
 
-        if (shoppingCarts.isEmpty())
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        return new ResponseEntity<>(shoppingCarts, HttpStatus.OK);
+        return new ResponseEntity<>(shoppingCartRepository.findByCustomer(customer), HttpStatus.OK);
     }
 
     @GetMapping("customer/{customerId}/active")
@@ -66,7 +62,6 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         Customer customer = customerRepository.findOne(customerId);
-//        TODO: refactor to use exists
         ShoppingCart shoppingCart = shoppingCartRepository.findByCustomerAndAuthorizedFalse(customer);
 
         if (shoppingCart == null) {
