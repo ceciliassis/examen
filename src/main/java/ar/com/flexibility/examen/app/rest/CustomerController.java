@@ -1,17 +1,24 @@
 package ar.com.flexibility.examen.app.rest;
 
 import ar.com.flexibility.examen.domain.model.Customer;
+import ar.com.flexibility.examen.domain.model.ShoppingCart;
 import ar.com.flexibility.examen.domain.repository.CustomerRepository;
+import ar.com.flexibility.examen.domain.repository.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping(path = "/customers")
 public class CustomerController {
     @Autowired
     private CustomerRepository customerRepository;
+    private ShoppingCartRepository shoppingCartRepository;
 
 
     @PostMapping("")
@@ -63,9 +70,38 @@ public class CustomerController {
         return customerRepository.findAll ();
     }
 
+
     @GetMapping("/{id}")
     public Customer getCustomer(@PathVariable Long id) {
         return customerRepository.findOne ( id );
+    }
+
+
+    @GetMapping("/{id}/carts")
+    public List <ShoppingCart> getAllCarts(@PathVariable Long id) {
+        return getShoppingCarts ( id );
+
+    }
+
+
+    @GetMapping("/{id}/activeCart")
+    public List <ShoppingCart> getActiveCart(@PathVariable Long id) {
+
+        return getShoppingCarts ( id )
+                .stream ()
+                .filter ( shoppingCart -> !shoppingCart.isAuthorized () )
+                .collect ( toList () );
+
+    }
+
+  
+
+
+    private List <ShoppingCart> getShoppingCarts(Long id) {
+        Customer customer = customerRepository.findOne ( id );
+        return shoppingCartRepository.findAll ().stream ()
+                .filter ( shoppingCart -> shoppingCart.getCustomer () == customer )
+                .collect ( toList () );
     }
 
 

@@ -72,6 +72,7 @@ public class CustomerControllerTest {
 
         verify(customerRepository, times(1)).delete(1L);
     }
+
 //    @Test
 //    public void whenCustomerValidDeleted_thenReturn200() throws Exception {
 //        Customer customer =  new Customer(1L, "Cecilia", "cyassis@gmail.com");

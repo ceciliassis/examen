@@ -1,10 +1,17 @@
 package ar.com.flexibility.examen.domain.model;
 
+import ar.com.flexibility.examen.domain.repository.ShoppingCartRepository;
+
 import javax.persistence.*;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Entity
 public class Customer {
+
+
+
 
     public Customer() {
     }
@@ -22,8 +29,9 @@ public class Customer {
     private String email;
     private String password;
 
-   @OneToMany(mappedBy = "customer", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-   private List <ShoppingCart> shoppingCart;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List <ShoppingCart> shoppingCart;
 
 
     public Long getId() {
@@ -48,4 +56,18 @@ public class Customer {
 
     public void setPassword(String password) {
     }
+
+
+//    CAN I CREATE A GET ACTIVE SHOPPING CART AS A METHOD FOR CUSTOMER??
+//    public List <ShoppingCart> getActiveShoppingCart(){
+//
+//        return shoppingCartRepository.findAll().stream ()
+//                .filter (shoppingCart -> shoppingCart.getCustomer() == this )
+//                .filter(shoppingCart -> !shoppingCart.isAuthorized ())
+//                .collect ( toList() );
+//    }
+
+
+
+
 }
