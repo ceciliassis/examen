@@ -13,66 +13,59 @@ public class CustomerController {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Customer> getCustomer(@PathVariable Long id) {
+        return new ResponseEntity<>(customerRepository.findOne(id), HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Iterable<Customer>> findAll() {
+        return new ResponseEntity<>(customerRepository.findAll(), HttpStatus.OK);
+    }
 
     @PostMapping("")
-    public ResponseEntity <?> createCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
+        if (customer.getEmail().isEmpty() || isRegistered(customer.getEmail()))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        if (customer.getEmail ().isEmpty ())
-            return new ResponseEntity <> ( "MISSING INFO", HttpStatus.NOT_ACCEPTABLE );
+        customerRepository.save(customer);
 
-        if (isRegistered ( customer.getEmail () ))
-            return new ResponseEntity <> ( "CONFLICT", HttpStatus.CONFLICT );
-
-        customerRepository.save ( customer );
-        return new ResponseEntity <> ( "CUSTOMER " + customer.getId ().toString () + " CREATED", HttpStatus.OK );
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity <?> deleteCustomer(@PathVariable Long id) {
+    public ResponseEntity<Customer> deleteCustomer(@PathVariable Long id) {
+        if (!customerRepository.exists(id))
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        if (!customerRepository.exists ( id )) {
-            return new ResponseEntity <> ( "CUSTOMER " + id.toString () + " NOT FOUND", HttpStatus.NOT_FOUND );
-        }
+        Customer customer = customerRepository.findOne(id);
+        customerRepository.delete(id);
 
-        customerRepository.delete ( id );
-        return new ResponseEntity <> ( "CUSTOMER " + id.toString () + " DELETED", HttpStatus.OK );
+        return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity <?> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+        if (!customerRepository.exists(id))
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        if (!customerRepository.exists ( id )) {
-            return new ResponseEntity <> ( "CUSTOMER " + id.toString () + " NOT FOUND", HttpStatus.NOT_FOUND );
-        }
+        Customer currentCustomer = customerRepository.findOne(id);
 
-        Customer currentCustomer = customerRepository.findOne ( id );
-        if (!customer.getName ().isEmpty ()) {
-            currentCustomer.setName ( customer.getName () );
-        }
-        if (!customer.getEmail ().isEmpty ()) {
-            currentCustomer.setEmail ( customer.getEmail () );
-        }
+        if (!customer.getName().isEmpty())
+            currentCustomer.setName(customer.getName());
 
-        customerRepository.save ( currentCustomer );
-        return new ResponseEntity <> ( "CUSTOMER " + id.toString () + " UPDATED", HttpStatus.OK );
-    }
+        if (!customer.getEmail().isEmpty())
+            currentCustomer.setEmail(customer.getEmail());
 
+        customerRepository.save(currentCustomer);
 
-    @GetMapping("")
-    public Iterable <Customer> findAll() {
-        return customerRepository.findAll ();
-    }
-
-    @GetMapping("/{id}")
-    public Customer getCustomer(@PathVariable Long id) {
-        return customerRepository.findOne ( id );
+        return new ResponseEntity<>(currentCustomer, HttpStatus.OK);
     }
 
 
     private boolean isRegistered(String email) {
-        Customer customer = customerRepository.findByEmail ( email );
+        Customer customer = customerRepository.findByEmail(email);
         return customer != null;
-
     }
 
 }
