@@ -6,7 +6,6 @@ import java.util.List;
 
 @Entity
 public class ShoppingCart {
-
     public ShoppingCart() {
     }
 

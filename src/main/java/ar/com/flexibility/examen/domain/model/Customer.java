@@ -5,7 +5,6 @@ import java.util.List;
 
 @Entity
 public class Customer {
-
     public Customer() {
     }
 
@@ -22,9 +21,8 @@ public class Customer {
     private String email;
     private String password;
 
-   @OneToMany(mappedBy = "customer", fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-   private List <ShoppingCart> shoppingCarts;
-
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ShoppingCart> shoppingCarts;
 
     public Long getId() {
         return id;

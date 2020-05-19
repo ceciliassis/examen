@@ -5,7 +5,6 @@ import java.util.List;
 
 @Entity
 public class ShoppingCartProduct {
-
     public ShoppingCartProduct() {
     }
 
@@ -13,12 +12,12 @@ public class ShoppingCartProduct {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="product_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="shopping_cart_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "shopping_cart_id")
     private ShoppingCart shoppingCart;
 
     private int quantity;
