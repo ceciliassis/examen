@@ -25,10 +25,6 @@ public class Customer {
     private String email;
     private String password;
 
-//    TODO: remove this mapping. Produces a unecessary LEFT OUTER JOIN
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<ShoppingCart> shoppingCarts;
-
     public Long getId() {
         return id;
     }
