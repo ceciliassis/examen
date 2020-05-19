@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface ShoppingCartRepository extends CrudRepository <ShoppingCart, Long>{
     List<ShoppingCart> findByCustomer(Customer customer);
-    ShoppingCart findByCustomerAndAuthorizedTrue(Customer customer);
+    ShoppingCart findByCustomerAndAuthorizedFalse(Customer customer);
 }

@@ -11,6 +11,7 @@ public class ShoppingCart {
 
     @Id
     @GeneratedValue
+//    TODO: add native generator
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -53,6 +54,7 @@ public class ShoppingCart {
     public void setProducts(List<ShoppingCartProduct> products) {
         this.products = products;
     }
+
 }
 
 

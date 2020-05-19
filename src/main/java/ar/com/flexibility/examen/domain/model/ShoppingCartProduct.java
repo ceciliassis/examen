@@ -1,7 +1,6 @@
 package ar.com.flexibility.examen.domain.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class ShoppingCartProduct {
@@ -34,19 +33,15 @@ public class ShoppingCartProduct {
         this.product = product;
     }
 
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
-    }
-
     public int getQuantity() {
         return quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 }
