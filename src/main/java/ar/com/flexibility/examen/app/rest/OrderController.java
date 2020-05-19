@@ -7,21 +7,18 @@ import ar.com.flexibility.examen.domain.repository.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("shoppingCart")
-public class ShoppingCartController {
+@RequestMapping("orders")
+public class OrderController {
     @Autowired
-    ShoppingCartRepository shoppingCartRepository;
+    private ShoppingCartRepository shoppingCartRepository;
 
     @Autowired
-    CustomerRepository customerRepository;
+    private CustomerRepository customerRepository;
 
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<Iterable<ShoppingCart>> findAllByCustomer(@PathVariable Long customerId) {
@@ -37,4 +34,17 @@ public class ShoppingCartController {
         return new ResponseEntity<>(shoppingCarts, HttpStatus.OK);
     }
 
+    @GetMapping("customer/{customerId}/active")
+    public ResponseEntity<ShoppingCart> getActiveShoppingCart(@PathVariable Long customerId) {
+        if (!customerRepository.exists(customerId))
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        Customer customer = customerRepository.findOne(customerId);
+        ShoppingCart shoppingCart = shoppingCartRepository.findByCustomerAndAuthorizedTrue(customer);
+
+        if (shoppingCart == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(shoppingCart, HttpStatus.OK);
+    }
 }

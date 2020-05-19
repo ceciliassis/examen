@@ -20,6 +20,10 @@ public class ShoppingCart {
     @OneToMany(mappedBy = "shoppingCart", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ShoppingCartProduct> products;
 
+    public ShoppingCart(Customer customer) {
+        this.customer = customer;
+    }
+
     private boolean authorized = false;
 
     public Long getId() {
