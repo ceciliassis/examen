@@ -9,5 +9,9 @@ import java.util.List;
 
 @Repository
 public interface ShoppingCartRepository extends CrudRepository <ShoppingCart, Long> {
+//    TODO: remove because its not necessary
     List <ShoppingCart> findAll();
+
+//    List<User> findByEmailAddressAndLastname(String emailAddress, String lastname);
+    Iterable<ShoppingCart> findByCustomer(Customer customer);
 }
