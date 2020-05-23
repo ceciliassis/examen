@@ -14,4 +14,6 @@ public interface ShoppingCartRepository extends CrudRepository <ShoppingCart, Lo
 
 //    List<User> findByEmailAddressAndLastname(String emailAddress, String lastname);
     Iterable<ShoppingCart> findByCustomer(Customer customer);
+
+    ShoppingCart findByCustomerAndAuthorizedFalse(Customer customer);
 }
