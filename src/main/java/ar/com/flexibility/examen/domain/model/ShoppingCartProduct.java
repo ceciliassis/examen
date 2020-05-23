@@ -35,10 +35,6 @@ public class ShoppingCartProduct {
         this.product = product;
     }
 
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }

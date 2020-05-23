@@ -2,6 +2,7 @@
 package ar.com.flexibility.examen.domain.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class ShoppingCart {
@@ -11,14 +12,20 @@ public class ShoppingCart {
     public ShoppingCart() {
     }
 
+    public ShoppingCart(Customer customer) {
+        this.customer = customer;
+    }
+
     @Id
     @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="customer_id")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    @OneToMany(mappedBy = "shoppingCart", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List <ShoppingCartProduct> shoppingCartProduct;
 
     public Customer getCustomer() {
         return customer;
@@ -26,6 +33,14 @@ public class ShoppingCart {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public List <ShoppingCartProduct> getShoppingCartProduct() {
+        return shoppingCartProduct;
+    }
+
+    public void setShoppingCartProduct(List <ShoppingCartProduct> shoppingCartProduct) {
+        this.shoppingCartProduct = shoppingCartProduct;
     }
 
     private boolean authorized = false;

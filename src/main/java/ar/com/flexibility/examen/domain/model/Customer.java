@@ -11,8 +11,6 @@ import static java.util.stream.Collectors.toList;
 public class Customer {
 
 
-
-
     public Customer() {
     }
 
@@ -28,10 +26,6 @@ public class Customer {
     private String name;
     private String email;
     private String password;
-
-
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List <ShoppingCart> shoppingCart;
 
 
     public Long getId() {
@@ -66,8 +60,6 @@ public class Customer {
 //                .filter(shoppingCart -> !shoppingCart.isAuthorized ())
 //                .collect ( toList() );
 //    }
-
-
 
 
 }

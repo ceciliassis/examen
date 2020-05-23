@@ -77,34 +77,6 @@ public class CustomerController {
     }
 
 
-    @GetMapping("/{id}/carts")
-    public List <ShoppingCart> getAllCarts(@PathVariable Long id) {
-        return getShoppingCarts ( id );
-
-    }
-
-
-    @GetMapping("/{id}/activeCart")
-    public List <ShoppingCart> getActiveCart(@PathVariable Long id) {
-
-        return getShoppingCarts ( id )
-                .stream ()
-                .filter ( shoppingCart -> !shoppingCart.isAuthorized () )
-                .collect ( toList () );
-
-    }
-
-  
-
-
-    private List <ShoppingCart> getShoppingCarts(Long id) {
-        Customer customer = customerRepository.findOne ( id );
-        return shoppingCartRepository.findAll ().stream ()
-                .filter ( shoppingCart -> shoppingCart.getCustomer () == customer )
-                .collect ( toList () );
-    }
-
-
     private boolean isRegistered(String email) {
         Customer customer = customerRepository.findByEmail ( email );
         return customer != null;
